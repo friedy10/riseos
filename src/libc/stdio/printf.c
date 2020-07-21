@@ -61,7 +61,10 @@ int printf(const char* restrict format, ...) {
 			if (!print(str, len))
 				return -1;
 			written += len;
-		} else {
+		} else if (*format == 'x'){
+            // TODO: Handle this
+
+        }else {
 			format = format_begun_at;
 			size_t len = strlen(format);
 			if (maxrem < len) {
