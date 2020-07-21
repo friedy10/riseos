@@ -22,6 +22,7 @@
 #include <stdbool.h>
 // Used to mark the end of the kernel
 extern uint32_t endkernel;
+extern uint32_t endkerneladdr;
 
 #define BITMAP_SIZE 32768
 // 4096
@@ -35,8 +36,8 @@ uint32_t bitmap[BITMAP_SIZE];
 
 void init_bitmap(void);
 bool is_free_page(physaddr_t p);
-void kalloc_page_frame();
-physaddr_t kfree_page_frame(physaddr_t ptr);
+physaddr_t kalloc_page_frame(void);
+void kfree_page_frame(physaddr_t ptr);
 physaddr_t kalloc_page_frame_at(physaddr_t addr);
 
 #endif

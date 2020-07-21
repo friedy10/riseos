@@ -5,7 +5,7 @@
 
 void kernel_main(void) {
     init_bitmap();
-	terminal_initialize();
-	printf("Hello, kernel World!\n");
+    terminal_initialize();
+    printf("Hello, kernel World!\n");
 
 }
