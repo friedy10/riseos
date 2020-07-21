@@ -15,8 +15,8 @@
  *
  * =====================================================================================
  */
-#ifndef PPM_H
-#define PPM_H
+#ifndef PMM_H
+#define PMM_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -33,7 +33,7 @@ typedef uintptr_t physaddr_t;
 
 uint32_t bitmap[BITMAP_SIZE];
 
-void setup_bitmap(void);
+void init_bitmap(void);
 bool is_free_page(physaddr_t p);
 void kalloc_page_frame();
 physaddr_t kfree_page_frame(physaddr_t ptr);
