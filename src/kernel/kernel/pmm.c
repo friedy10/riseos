@@ -22,6 +22,7 @@
 #define OFFSET_FROM_BIT(a) (a%(8*4))
 
 uint32_t endkernel;
+//Aligned version
 uint32_t endkerneladdr;
 
 void set_page_reserved(physaddr_t addr, bool set);
@@ -31,7 +32,7 @@ void init_bitmap(void){
         bitmap[i] = 0;
     }
     if(!endkerneladdr){
-        // Align page
+        // Align page (Set last 12 bits to 0)
         endkerneladdr = (((uint32_t)&endkernel & 0xFFFFF000) + PAGE_SIZE); 
     }
     for(uint32_t i = 0; i < endkerneladdr; i+=PAGE_SIZE){
