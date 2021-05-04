@@ -41,7 +41,7 @@ extern uint32_t endkerneladdr;
 #define WORDSIZE 32
 #define BIT_WS 17
 #define BITMASK 0x1f
-typedef uintptr_t physaddr_t;
+typedef uint32_t physaddr_t;
 
 void pmm_init(void);
 bool is_free_page(physaddr_t p);

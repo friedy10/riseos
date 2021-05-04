@@ -17,7 +17,7 @@ void kernel_main(void) {
     printf("Testing memeory manager\n");
     
     qemu_printf("HELLO WORLD FROM QEMU\n");
-    for(int i = 0; i < 100; i++){
+    for(int i = 0; i < 8; i++){
         physaddr_t frame = kalloc_page_frame();
         qemu_printf("Loaded Page Frame At 0x%p \n", (void*) frame);
     }

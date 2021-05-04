@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  paging.c
+ *       Filename:  pmm.c
  *
  *    Description:  
  *
@@ -17,15 +17,13 @@
  */
 #include <stdlib.h>
 #include <kernel/pmm.h>
-
-#define INDEX_FROM_BIT(a) (a >> 5)
-#define OFFSET_FROM_BIT(a) (a%(8*4))
+#include <kernel/serial.h>
 
 uint32_t endkernel;
 //Aligned version
 uint32_t endkerneladdr;
 
-uint8_t bitmap[BITMAP_SIZE];
+uint32_t bitmap[BITMAP_SIZE];
 
 void set_page_reserved(physaddr_t addr, bool set);
 
@@ -37,59 +35,54 @@ void pmm_init(void){
         // Align page (Set last 12 bits to 0)
         endkerneladdr = (uint32_t) BLOCK_ALIGN((uint32_t)(bitmap + BITMAP_SIZE));
     }
+    
+    qemu_printf("END KERNEL ADDR 0x%p ", (void*) endkerneladdr);
     for(uint32_t i = 0; i < endkerneladdr; i+=PAGE_SIZE){
         set_page_reserved(i, true);
     }
 }
 
 
-bool is_free_page(physaddr_t addr){
-    // Calculate the offset
-    unsigned i = INDEX_FROM_BIT(addr);
-    unsigned offset = OFFSET_FROM_BIT(addr); 
-    return (bitmap[i] & (0x1 << offset));
-}
 
 void set_page_reserved(physaddr_t addr, bool set){
-    unsigned i = INDEX_FROM_BIT(addr);
-    unsigned offset = OFFSET_FROM_BIT(addr);
-    if(set) {
-        bitmap[i] |= (0x1 << offset);
+    if(!ISSET(addr)) {
+        SETBIT(addr);
     }else{
-        bitmap[i] &= ~(0x1 << offset);
+        CLEARBIT(addr);
     }
 }
 
 physaddr_t kalloc_page_frame_at(physaddr_t addr){
     addr=addr&0xFFFFF000; //Align
-    if(is_free_page(addr)){
+    if(!ISSET(addr)){
         set_page_reserved(addr, true);
-        return addr;
+        return (physaddr_t) addr;
     }else{
-        // Can't allocate frame
+        qemu_printf("Cannot Allocate Page Frame\n");
     }
     return 0;
 }
 
-//TODO: Check this code
 physaddr_t kalloc_page_frame(void){
-    int i, j;
-    for(i = 0; i < BITMAP_SIZE; i++){
-        // ARE WE FREE
-        if(bitmap[i] != 0xFFFFFFFF){
-            for(j = 0; j < 8; j++){
-                // Find the bit to set
-                if(bitmap[i] & (1<< j)){
-                    bitmap[i] &= ~(1 << j);
-                    return (physaddr_t)((i *8 + j) * PAGE_SIZE);
-                }
-            }
-        }  
+    uint32_t i;
+    for(i = 0; i < 8; i++){
+        if(!ISSET(i)){
+            SETBIT(i);
+            return (physaddr_t) endkerneladdr + (i*0x1000);
+        }
     }
-    return (physaddr_t)(0x0);
+    qemu_printf("Failed to allocate page frame: out of mem!\n");
+    return (physaddr_t)-1;
 }
 
 void kfree_page_frame(physaddr_t addr){
-    addr=addr&0xFFFFF000;
-    set_page_reserved(addr, false);
+    addr = addr - endkerneladdr;
+    if(addr == 0){
+        uint32_t idx = (uint32_t)addr;
+        CLEARBIT(idx);
+    }else{
+        // Find the index
+        uint32_t idx = ((uint32_t) addr)/0x1000;
+        CLEARBIT(idx);
+    }
 }
