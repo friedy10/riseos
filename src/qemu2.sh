@@ -1,1 +1,1 @@
-qemu-system-i386 -kernel sysroot/boot/myos.kernel
+qemu-system-i386 -serial stdio -kernel sysroot/boot/myos.kernel

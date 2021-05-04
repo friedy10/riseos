@@ -2,15 +2,23 @@
 
 #include <kernel/tty.h>
 #include <kernel/pmm.h>
+#include <kernel/serial.h>
+
+uint32_t endkernel;
+uint32_t endkerneladdr;
 
 void kernel_main(void) {
-    init_bitmap();
+
+    pmm_init();
     terminal_initialize();
+    serial_init();
     printf("Hello, kernel World!\n");
-	//TODO: Handle newlines and check if PMM actually works
-    //printf("Testing memeory manager\n");
-    //for(int i = 0; i < 100; i++){
-    //    physaddr_t frame = kalloc_page_frame();
-     //   printf("Made frame at: %s \n", frame);
-   // }
+    
+    printf("Testing memeory manager\n");
+    
+    qemu_printf("HELLO WORLD FROM QEMU\n");
+    for(int i = 0; i < 100; i++){
+        physaddr_t frame = kalloc_page_frame();
+        qemu_printf("Loaded Page Frame At 0x%p \n", (void*) frame);
+    }
 }

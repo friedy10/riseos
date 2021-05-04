@@ -21,7 +21,7 @@ int printf(const char* restrict format, ...) {
 	while (*format != '\0') {
 		size_t maxrem = INT_MAX - written;
 
-		if (format[0] != '%' || format[1] == '%') {
+        if (format[0] != '%' || format[1] == '%') {
 			if (format[0] == '%')
 				format++;
 			size_t amount = 1;
@@ -37,6 +37,7 @@ int printf(const char* restrict format, ...) {
 			written += amount;
 			continue;
 		}
+
 
 		const char* format_begun_at = format++;
 

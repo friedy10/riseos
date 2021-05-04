@@ -48,9 +48,18 @@ void terminal_putchar(char c) {
 	}
 }
 
+void terminal_newline(void){
+	terminal_column = 0;
+	terminal_row++;
+}
+
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
-		terminal_putchar(data[i]);
+        if(data[i] == '\n'){
+            terminal_newline();
+        }else{
+		    terminal_putchar(data[i]);
+        }
 }
 
 void terminal_writestring(const char* data) {

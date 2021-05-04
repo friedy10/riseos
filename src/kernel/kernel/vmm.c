@@ -62,15 +62,22 @@ bool page_table_exist(uint32_t pdi, uint32_t pti){
     return get_page_table_entry(pdi, pti) & PRESENT;
 }
 
-// Setup a page table
 void new_page_table(unsigned pdi, bool kernel, bool readwrite){
-    // Load a page for the page table
     physaddr_t paddr = kalloc_page_frame();
     uint32_t flags = PRESENT;
     if(!kernel) flags |= USERMODE;
     if(readwrite) flags |= READWRITE;
-    set_page_table_entry(1023, pdi, paddr | flags);
-    for(unsigned i = 0; i < 1024; i++){
+    // TODO: Check this line
+    set_page_table_entry(pdi, 1023, paddr|flags);
+    for(int i = 0 ; i < 1024; i++){
         set_page_table_entry(pdi, i, 0);
     }
+}
+
+void clone_page_table(uint32_t i){
+    uint32_t* src = (uint32_t*)
+}
+
+void init_vmm(void){
+
 }

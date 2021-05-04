@@ -1,4 +1,5 @@
 #!/bin/sh
+export PATH=$PATH:/home/friedy/Documents/i686-elf-tools-linux/bin
 set -e
 . ./headers.sh
 

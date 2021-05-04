@@ -25,15 +25,17 @@ uint32_t endkernel;
 //Aligned version
 uint32_t endkerneladdr;
 
+uint8_t bitmap[BITMAP_SIZE];
+
 void set_page_reserved(physaddr_t addr, bool set);
 
-void init_bitmap(void){
+void pmm_init(void){
     for(int i = 0; i < BITMAP_SIZE; i++){
         bitmap[i] = 0;
     }
     if(!endkerneladdr){
         // Align page (Set last 12 bits to 0)
-        endkerneladdr = (((uint32_t)&endkernel & 0xFFFFF000) + PAGE_SIZE); 
+        endkerneladdr = (uint32_t) BLOCK_ALIGN((uint32_t)(bitmap + BITMAP_SIZE));
     }
     for(uint32_t i = 0; i < endkerneladdr; i+=PAGE_SIZE){
         set_page_reserved(i, true);
@@ -75,11 +77,11 @@ physaddr_t kalloc_page_frame(void){
     for(i = 0; i < BITMAP_SIZE; i++){
         // ARE WE FREE
         if(bitmap[i] != 0xFFFFFFFF){
-            for(j = 0; j < 32; j++){
+            for(j = 0; j < 8; j++){
                 // Find the bit to set
                 if(bitmap[i] & (1<< j)){
                     bitmap[i] &= ~(1 << j);
-                    return (physaddr_t)((i *32 + j) * PAGE_SIZE);
+                    return (physaddr_t)((i *8 + j) * PAGE_SIZE);
                 }
             }
         }  
