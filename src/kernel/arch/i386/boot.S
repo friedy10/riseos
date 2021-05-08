@@ -19,8 +19,34 @@ stack_bottom:
 .skip 16384 # 16 KiB
 stack_top:
 
-# The kernel entry point.
 .section .text
+
+# Load the page directory
+.global load_page_directory
+.type load_page_directory, @function
+load_page_directory:
+	push %ebp
+	mov %esp, %ebp
+	mov 8(%esp), %eax
+	mov %eax, %cr3
+	mov %ebp, %esp
+	pop %ebp
+	ret
+
+# Enable paging
+.global enable_paging
+.type enable_paging, @function
+enable_paging:
+    push %ebp
+    mov %esp, %ebp
+	mov %cr0, %eax
+	or  $0x80000000, %eax
+	mov %eax, %cr0
+	mov %ebp, %esp
+	pop %ebp
+	ret
+
+# The kernel entry point.
 .global _start
 .type _start, @function
 _start:

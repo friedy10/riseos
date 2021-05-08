@@ -3,9 +3,8 @@
 #include <kernel/tty.h>
 #include <kernel/pmm.h>
 #include <kernel/serial.h>
+#include <kernel/vmm.h>
 
-uint32_t endkernel;
-uint32_t endkerneladdr;
 
 void kernel_main(void) {
 
@@ -21,4 +20,5 @@ void kernel_main(void) {
         physaddr_t frame = kalloc_page_frame();
         qemu_printf("Loaded Page Frame At 0x%p \n", (void*) frame);
     }
+
 }
