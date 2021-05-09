@@ -11,6 +11,7 @@ void kernel_main(void) {
     pmm_init();
     terminal_initialize();
     serial_init();
+    paging_init();
     printf("Hello, kernel World!\n");
     
     printf("Testing memeory manager\n");

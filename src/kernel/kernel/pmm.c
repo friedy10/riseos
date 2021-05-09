@@ -67,7 +67,7 @@ physaddr_t kalloc_page_frame_at(physaddr_t addr){
 
 physaddr_t kalloc_page_frame(void){ 
     uint32_t i;
-    for(i = 0; i < 4096; i++){
+    for(i = 0; i < endkerneladdr; i++){
         if(!ISSET(i)){
             SETBIT(i);
             return (physaddr_t) BLOCK_ALIGN((uint32_t) (endkerneladdr + (i*0x1000)));

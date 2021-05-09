@@ -40,39 +40,31 @@
 #define ERR_RESERVED 0x8
 #define ERR_INST     0x10
 
-typedef struct page_table_entry {
-    unsigned int present    : 1;
-    unsigned int rw         : 1;
-    unsigned int user       : 1;
-    unsigned int reserved   : 2;
-    unsigned int accessed   : 1;
-    unsigned int dirty      : 1;
-    unsigned int reserved2  : 2;
-    unsigned int available  : 3;
-    unsigned int frame      : 20;
-}page_table_entry_t;
+struct page {
+	uint32_t present : 1;
+	uint32_t writeable : 1;
+	uint32_t user : 1;
+	uint32_t rsvd_0 : 2;
+	uint32_t accessed : 1;
+	uint32_t dirty : 1;
+	uint32_t rsvd_1 : 2;
+	uint32_t avail : 3;
+	uint32_t frame : 20;
+} __attribute__((packed));
 
-typedef struct page_dir_entry {
-    unsigned int present    : 1;
-    unsigned int rw         : 1;
-    unsigned int user       : 1;
-    unsigned int w_through  : 1;
-    unsigned int cache      : 1;
-    unsigned int access     : 1;
-    unsigned int reserved   : 1;
-    unsigned int page_size  : 1;
-    unsigned int global     : 1;
-    unsigned int available  : 3;
-    unsigned int frame      : 20;
-}page_dir_entry_t;
+struct page_table {
+	struct page pages[1024];
+} __attribute__((packed));
 
-typedef struct page_table{
-    uint32_t page[1024];
-} page_table_t;
+struct page_directory {
+	struct page_table *tables[1024];
+	uint32_t tables_physical[1024];
+	uint32_t physical_addr;
+};
 
-typedef struct page_directory{
-    page_table_t table[1024];
-} page_directory_t;
+typedef struct page page;
+typedef struct page_table page_table;
+typedef struct page_directory page_directory;
 
 extern void load_page_directory(unsigned int*);
 extern void enable_paging();
