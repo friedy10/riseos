@@ -56,10 +56,24 @@ struct page_table {
 	struct page pages[1024];
 } __attribute__((packed));
 
+struct page_dir_entry{
+    unsigned int present    : 1;
+    unsigned int rw         : 1;
+    unsigned int user       : 1;
+    unsigned int w_through  : 1;
+    unsigned int cache      : 1;
+    unsigned int access     : 1;
+    unsigned int reserved   : 1;
+    unsigned int page_size  : 1;
+    unsigned int global     : 1;
+    unsigned int available  : 3;
+    unsigned int frame      : 20;
+};
+
 struct page_directory {
 	struct page_table *tables[1024];
-	uint32_t tables_physical[1024];
-	uint32_t physical_addr;
+	struct page_dir_entry tables_physical[1024];
+	//uint32_t physical_addr;
 };
 
 typedef struct page page;

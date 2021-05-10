@@ -39,7 +39,7 @@
 
 // Used to mark the end of the kernel
 extern uint32_t endkernel;
-extern uint32_t endkerneladdr;
+extern uint32_t placementaddr;
 
 // BITMAP
 // uint32_t bitmap[BITMAP_SIZE];

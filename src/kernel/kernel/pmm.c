@@ -21,7 +21,7 @@
 
 uint32_t endkernel;
 //Aligned version
-uint32_t endkerneladdr;
+uint32_t placementaddr;
 
 uint32_t bitmap[BITMAP_SIZE];
 
@@ -31,17 +31,16 @@ void pmm_init(void){
     for(int i = 0; i < BITMAP_SIZE; i++){
         bitmap[i] = 0;
     }
-    if(!endkerneladdr){
+    if(!placementaddr){
         // Align page (Set last 12 bits to 0)
-        endkerneladdr = (uint32_t) BLOCK_ALIGN((uint32_t)(bitmap + BITMAP_SIZE + PAGE_SIZE));
+        placementaddr = (uint32_t) BLOCK_ALIGN((uint32_t)(bitmap + BITMAP_SIZE + PAGE_SIZE));
     }
     
-    qemu_printf("END KERNEL ADDR 0x%p ", (void*) endkerneladdr);
-    for(uint32_t i = 0; i < endkerneladdr; i+=PAGE_SIZE){
+    qemu_printf("END KERNEL ADDR 0x%p \n", (void*) placementaddr);
+    for(uint32_t i = 0; i < placementaddr; i+=PAGE_SIZE){
         SETBIT(i);
     }
 
-    qemu_printf("END KERNEL ADDR 0x%p ", (void*) endkerneladdr);
 }
 
 
@@ -65,12 +64,12 @@ physaddr_t kalloc_page_frame_at(physaddr_t addr){
     return 0;
 }
 
-physaddr_t kalloc_page_frame(void){ 
+physaddr_t kalloc_page_frame(void){
     uint32_t i;
-    for(i = 0; i < endkerneladdr; i++){
+    for(i = 0; i < ((1024*1024*1096)/PAGE_SIZE); i++){
         if(!ISSET(i)){
             SETBIT(i);
-            return (physaddr_t) BLOCK_ALIGN((uint32_t) (endkerneladdr + (i*0x1000)));
+            return (physaddr_t) BLOCK_ALIGN((uint32_t) (placementaddr + (i*0x1000)));
         }
     }
     qemu_printf("Failed to allocate page frame: out of mem!\n");
@@ -78,7 +77,7 @@ physaddr_t kalloc_page_frame(void){
 }
 
 void kfree_page_frame(physaddr_t addr){
-    addr = addr - endkerneladdr;
+    addr = addr - placementaddr;
     if(addr == 0){
         uint32_t idx = (uint32_t)addr;
         CLEARBIT(idx);

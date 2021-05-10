@@ -29,21 +29,17 @@ uint32_t top = 0;
 uint32_t *frames;
 page_directory *current_directory = NULL;
 
-//uint32_t endkerneladdr;
-
-
-uint32_t paddr = (uint32_t)(&endkerneladdr);
 
 
 void* dumballoc(uint32_t sz)
 {
 	uint32_t tmp;
-	if (paddr& 0xFFF) {
-		paddr&= ~0xFFF;
-		paddr += 0x1000;
+	if (placementaddr& 0xFFF) {
+		placementaddr&= ~0xFFF;
+		placementaddr += 0x1000;
 	}
-	tmp = paddr;
-	paddr += sz;
+	tmp = placementaddr;
+	placementaddr += sz;
 	return (void *) tmp;
 }
 
@@ -57,16 +53,69 @@ void switch_to_page_dir(struct page_directory *dir)
 	asm volatile("mov %0, %%cr0":: "r"(cr0));
 }
 
-/*void* dumballoc(uint32_t size){
-    void * ret = (void*) kalloc_page_frame();
-    size -= PAGE_SIZE;
+// Convert a virtual address to a physical address
+void* virt_phys(page_directory* dir, void* vaddr){
+    uint32_t pdindex = PAGEDIR_INDEX(vaddr);
+    uint32_t ptindex = PAGETBL_INDEX(vaddr);
+    uint32_t page_frame_offset = PAGEFRAME_INDEX(vaddr);
 
-    for(int i = 0; i < size; i+=PAGE_SIZE){
-       kalloc_page_frame();
+    // The page table does not exist
+    if(!dir->tables[pdindex]){
+        qemu_printf("virt_phys: The page directory dir entry does not exist\n");
+        return NULL;
     }
 
-    return ret;
-}*/
+    page_table * table = dir->tables[pdindex];
+
+    if(!table->pages[ptindex].present){
+        qemu_printf("virt_phys: The page table entry does not exist\n");
+        return NULL;
+    }
+
+    uint32_t t = table->pages[ptindex].frame;
+
+    return (void*)  ((t >> 12) + page_frame_offset);
+}
+
+
+// Allocate a page
+void allocatepage(page_directory* dir, void* vaddr){
+    uint32_t pdindex = PAGEDIR_INDEX(vaddr);
+    uint32_t ptindex = PAGETBL_INDEX(vaddr);
+    uint32_t page_frame_offset = PAGEFRAME_INDEX(vaddr);
+
+    // The page table does not exist
+    if(!dir->tables[pdindex]){
+        // Create a new page table
+        page_table *table = dumballoc(sizeof(*table));
+        memset(table, 0, 1024 *sizeof(*table));
+        
+        //uint32_t t = virt_phys(dir, table);
+        dir->tables_physical[pdindex].frame = (uint32_t)table >> 12;
+        dir->tables_physical[pdindex].present = 1;
+        dir->tables_physical[pdindex].rw = 1;
+        dir->tables_physical[pdindex].user = 1;
+        dir->tables_physical[pdindex].page_size = 0;
+
+        dir->tables[pdindex] = table;
+
+
+    }
+
+    page_table * table = dir->tables[pdindex];
+
+    // The page table entry doesn't exist
+    if(!table->pages[ptindex].present){
+        // Allocate a page frame
+        uint32_t frame = kalloc_page_frame();
+
+        table->pages[ptindex].frame = frame;
+        table->pages[ptindex].present = 1;
+        table->pages[ptindex].writeable = 1;
+        table->pages[ptindex].user = 1;
+    }
+}
+
 
 void paging_init(){
 
@@ -86,18 +135,21 @@ void paging_init(){
     frames = dumballoc(nframes * sizeof(*frames));
 
     uint32_t i = 0;
-    for(i = 0; i < endkerneladdr; i++){
+    for(i = 0; i < placementaddr; i++){
         table->pages[i].present = 1;
         table->pages[i].writeable = 1;
         table->pages[i].user = 0;
         table->pages[i].frame = i;
     }
 
+
+    kernel_dir->tables_physical[0].frame = (uint32_t)table >> 12;
+    kernel_dir->tables_physical[0].present = 1;
+    kernel_dir->tables_physical[0].rw = 1;
+    kernel_dir->tables_physical[0].user = 1;
+    kernel_dir->tables_physical[0].page_size = 0;
     kernel_dir->tables[0] = table;
-    kernel_dir->tables_physical[0] = ((uint32_t) table->pages) | 3;
-    
-    //load_page_directory(kernel_dir);
-    //enable_paging();
+
     
     switch_to_page_dir(kernel_dir);
 
@@ -106,42 +158,5 @@ void paging_init(){
 }
 
 
-void * virtual2phys(void){
-    
-}
 
 
-
-
-/* void paging_init(){
-    // uint32_t page_directory[1024] __attribute__((aligned(4096)));
-
-    // For some reason paging only works when the directory is 
-    // below the adress 0x127000 IDK why
-
-    uint32_t* page_directory = (uint32_t*) (dumballoc(PAGE_SIZE));
-    memset(page_directory, 0, 4096);
-    
-    //set each entry to not present
-    for(int i = 0; i < 1024; i++){
-        page_directory[i] = 0x00000002;
-    }
-
-
-    uint32_t* first_page_table = (uint32_t*) (dumballoc(PAGE_SIZE));
-    memset(first_page_table, 0, 4096);
-
-    for(unsigned int i = 0; i < 1024; i++){
-        first_page_table[i] = (i * 0x1000) | 3;
-    }
-
-    page_directory[0] = ((unsigned int)first_page_table) | 3;
-
-
-    qemu_printf("Running paging_init\n");
-    
-    load_page_directory(page_directory);
-    enable_paging();
-
-    qemu_printf("Paging enabled\n");
-}*/
