@@ -86,5 +86,11 @@ extern void enable_paging();
 void* dumb_kmalloc(uint32_t, int);
 void paging_init();
 void * virtual2phys(void);
+void switch_to_page_dir(struct page_directory *dir);
+void* virt_phys(page_directory* dir, void* vaddr);
+void allocate_page(page_directory* dir, void* vaddr);
+void free_page(page_directory* dir, void* vaddr);
+void allocate_region(page_directory* dir, uint32_t start_va, uint32_t end_va);
+void free_region(page_directory* dir, uint32_t start_va, uint32_t end_va);
 
 #endif
