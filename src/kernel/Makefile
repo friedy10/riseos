@@ -31,6 +31,8 @@ KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/pmm.o \
 kernel/vmm.o \
+kernel/rise.o\
+kernel/liballoc.o\
 kernel/serial.o \
 kernel/kernel.o \
 

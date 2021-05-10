@@ -83,6 +83,8 @@ typedef struct page_directory page_directory;
 extern void load_page_directory(unsigned int*);
 extern void enable_paging();
 
+extern page_directory *kernel_dir;
+
 void* dumb_kmalloc(uint32_t, int);
 void paging_init();
 void * virtual2phys(void);

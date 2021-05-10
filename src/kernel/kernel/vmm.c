@@ -28,7 +28,7 @@ uint32_t nframes = 0;
 uint32_t top = 0;
 uint32_t *frames;
 page_directory *current_directory = NULL;
-
+page_directory *kernel_dir; 
 
 
 void* dumballoc(uint32_t sz)
@@ -169,7 +169,7 @@ void free_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
 void paging_init(){
 
     qemu_printf("Paging INIT");
-    page_directory *kernel_dir = NULL;
+    kernel_dir = NULL;
     page_table *table = NULL;
 
     kernel_dir = dumballoc(sizeof(*kernel_dir));

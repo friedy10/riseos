@@ -76,6 +76,13 @@ physaddr_t kalloc_page_frame(void){
     return (physaddr_t)-1;
 }
 
+/*physaddr_t next_free_frame(void){
+    uint32_t i;
+    for(i = 0; i < ((1024*1024*1096)/PAGE_SIZE); i++){
+    }
+}*/
+
+
 void kfree_page_frame(physaddr_t addr){
     addr = addr - placementaddr;
     if(addr == 0){

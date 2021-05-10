@@ -4,6 +4,8 @@
 #include <kernel/pmm.h>
 #include <kernel/serial.h>
 #include <kernel/vmm.h>
+#include <kernel/liballoc.h>
+#include <kernel/spinlock.h>
 
 
 void kernel_main(void) {
@@ -22,4 +24,27 @@ void kernel_main(void) {
         qemu_printf("Loaded Page Frame At 0x%p \n", (void*) frame);
     }
 
+    spinlock lock = 0;
+    qemu_printf("Testing Spin Lock\n");
+    spin_lock(&lock);
+
+    qemu_printf("COOL COOL \n");
+    spin_unlock(&lock);
+
+    qemu_printf("Testing Heap...\n");
+    
+    unsigned char* arr = (unsigned char*) malloc(sizeof(char) * 10);
+
+    for(int i = 0; i < 10; i++){
+        arr[i] = "A";
+    }
+
+    for(int i = 0; i < 10; i++){
+        qemu_printf("This is cool %s\n", arr[i]);
+    }
+
+    free(arr);
+
+
+    qemu_printf("WORKS\n");
 }
