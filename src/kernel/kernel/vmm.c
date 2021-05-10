@@ -79,7 +79,7 @@ void* virt_phys(page_directory* dir, void* vaddr){
 
 
 // Allocate a page
-void allocatepage(page_directory* dir, void* vaddr){
+void allocate_page(page_directory* dir, void* vaddr){
     uint32_t pdindex = PAGEDIR_INDEX(vaddr);
     uint32_t ptindex = PAGETBL_INDEX(vaddr);
     uint32_t page_frame_offset = PAGEFRAME_INDEX(vaddr);
@@ -116,6 +116,55 @@ void allocatepage(page_directory* dir, void* vaddr){
     }
 }
 
+// Free a page
+void free_page(page_directory* dir, void* vaddr){
+
+    uint32_t pdindex = PAGEDIR_INDEX(vaddr);
+    uint32_t ptindex = PAGETBL_INDEX(vaddr);
+    uint32_t page_frame_offset = PAGEFRAME_INDEX(vaddr);
+
+    // The page table does not exist
+    if(!dir->tables[pdindex]){
+        qemu_printf("virt_phys: The page directory dir entry does not exist\n");
+        return NULL;
+    }
+
+    page_table * table = dir->tables[pdindex];
+
+    if(!table->pages[ptindex].present){
+        qemu_printf("virt_phys: The page table entry does not exist\n");
+        return NULL;
+    }
+
+    uint32_t t = table->pages[ptindex].frame;
+    kfree_page_frame(t);
+
+    table->pages[ptindex].present = 0;
+    table->pages[ptindex].writeable = 0;
+}
+
+// Allocate region
+void allocate_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
+    uint32_t start = start_va & 0xfffff000; // Discards bits that we don't want
+    uint32_t end = end_va & 0xfffff000; // Discards bits that we don't want
+    
+    while(start <= end){
+        allocate_page(dir, start);
+        start += PAGE_SIZE;
+    }
+}
+
+// Free a region
+void free_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
+    uint32_t start = start_va & 0xfffff000;
+    uint32_t end = end_va & 0xfffff000;
+
+    while(start <= end){
+        free_page(dir, start);
+        start += PAGE_SIZE;
+    }
+
+}
 
 void paging_init(){
 
