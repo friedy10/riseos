@@ -98,8 +98,6 @@ void allocate_page(page_directory* dir, void* vaddr){
         dir->tables_physical[pdindex].page_size = 0;
 
         dir->tables[pdindex] = table;
-
-
     }
 
     page_table * table = dir->tables[pdindex];
@@ -153,6 +151,13 @@ void allocate_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
         start += PAGE_SIZE;
     }
 }
+
+void* allocate_pages(uint32_t pages){
+
+}
+
+
+
 
 // Free a region
 void free_region(page_directory* dir, uint32_t start_va, uint32_t end_va){

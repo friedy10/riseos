@@ -40,7 +40,19 @@ void kernel_main(void) {
     }
 
     for(int i = 0; i < 10; i++){
-        qemu_printf("This is cool %s\n", arr[i]);
+        qemu_printf("This is cool 0x%p\n", &arr[i]);
+    }
+
+    qemu_printf("________________\n");
+    
+    unsigned char* arr2 = (unsigned char*) malloc(sizeof(char) * 10);
+
+    for(int i = 5; i < 10; i++){
+        arr2[i] = "B";
+    }
+
+    for(int i = 0; i < 10; i++){
+        qemu_printf("This is cool 0x%p\n", &arr2[i]);
     }
 
     free(arr);
