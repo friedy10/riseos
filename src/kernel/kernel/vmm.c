@@ -27,6 +27,9 @@
 uint32_t nframes = 0;
 uint32_t top = 0;
 uint32_t *frames;
+uint32_t heap_start;
+uint32_t heap_end;
+uint32_t heap_cur;
 page_directory *current_directory = NULL;
 page_directory *kernel_dir; 
 
@@ -152,11 +155,6 @@ void allocate_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
     }
 }
 
-void* allocate_pages(uint32_t pages){
-
-}
-
-
 
 
 // Free a region
@@ -173,7 +171,7 @@ void free_region(page_directory* dir, uint32_t start_va, uint32_t end_va){
 
 void paging_init(){
 
-    qemu_printf("Paging INIT");
+    qemu_printf("Paging INIT\n");
     kernel_dir = NULL;
     page_table *table = NULL;
 
@@ -207,8 +205,14 @@ void paging_init(){
     
     switch_to_page_dir(kernel_dir);
 
-    qemu_printf("Paging enabled...\n");
+    qemu_printf("Paging enabled setting up heap...\n");
     
+    heap_start =  placementaddr;
+    heap_cur = placementaddr;
+    heap_end = heap_start + (HEAP_SIZE);
+
+   // allocate_region(kernel_dir, heap_start, heap_end);
+
 }
 
 

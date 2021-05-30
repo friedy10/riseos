@@ -83,6 +83,13 @@ typedef struct page_directory page_directory;
 extern void load_page_directory(unsigned int*);
 extern void enable_paging();
 
+#define HEAP_SIZE (1024 * PAGE_SIZE)
+
+extern uint32_t heap_start;
+extern uint32_t heap_cur;
+extern uint32_t heap_end;
+
+
 extern page_directory *kernel_dir;
 
 void* dumb_kmalloc(uint32_t, int);

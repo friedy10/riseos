@@ -15,7 +15,8 @@ void kernel_main(void) {
     serial_init();
     paging_init();
     printf("Hello, kernel World!\n");
-    
+   
+
     printf("Testing memeory manager\n");
     
     qemu_printf("HELLO WORLD FROM QEMU\n");
@@ -56,6 +57,13 @@ void kernel_main(void) {
     }
 
     free(arr);
+    free(arr2);
+
+   /* qemu_printf("Let's try to exhaust our memory!\n");
+    for(int i = 0; i < 10000; i++){
+        char * arr = (char*) malloc(sizeof(char) * 100);
+    }
+    qemu_printf("Finished!\n");*/
 
 
     qemu_printf("WORKS\n");
