@@ -1,4 +1,4 @@
-#include <idt.h>
+#include <kernel/idt.h>
 
 
 
@@ -17,5 +17,5 @@ void idt_install(){
 
     memset(&idt, 0, sizeof(idt_entry) * 256);
 
-    idt_load();
+    idt_load(&idtp);
 }

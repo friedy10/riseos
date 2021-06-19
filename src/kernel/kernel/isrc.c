@@ -1,5 +1,6 @@
 #include <kernel/isrc.h>
-
+#include <stdio.h>
+#include <kernel/tty.h>
 
 // We set the access
 // flags to 0x8E. This means that the entry is present, is
@@ -43,4 +44,11 @@ void isrs_install(){
 }
 
 
-
+void fault_handler(struct regs *r){
+    // 0 t0 31 
+    if(r->int_no < 32){
+        qemu_printf(exception_messages[r->int_no]);
+        qemu_pirntf(" Exception. System Halted!\n");
+        for (;;);
+    }
+}

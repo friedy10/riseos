@@ -1,5 +1,5 @@
-#define ISRC_H
 #ifndef ISRC_H
+#define ISRC_H
 
 #include <stdio.h>
 
@@ -8,7 +8,6 @@
 #include <kernel/serial.h>
 #include <kernel/vmm.h>
 #include <kernel/liballoc.h>
-#include <kernel/idt.h>
 
 // 32 IDT enteries for Intel
 
@@ -45,10 +44,20 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
+/* This defines what the stack looks like after an ISR was running */
+struct regs
+{
+    unsigned int gs, fs, es, ds;      /* pushed the segs last */
+    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pushed by 'pusha' */
+    unsigned int int_no, err_code;    /* our 'push byte #' and ecodes do this */
+    unsigned int eip, cs, eflags, useresp, ss;   /* pushed by the processor automatically */ 
+};
+
+
 // Setup ISRs
 void isrs_install();
 
-void fault_handler(struct regs* r);
+void fault_handler(struct regs *r);
 
 unsigned char *exception_messages[] =
 {

@@ -34,6 +34,9 @@ kernel/vmm.o \
 kernel/rise.o\
 kernel/liballoc.o\
 kernel/serial.o \
+kernel/gdt.o \
+kernel/idt.o \
+kernel/isrc.o \
 kernel/kernel.o \
 
 OBJS=\

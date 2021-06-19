@@ -95,250 +95,250 @@ idt_load:
 .type isr0, @function
 isr0:
     cli
-    push byte 0
-    push byte 0
+    push   0
+    push   0
     jmp isr_common_stub
 
 #  1: Debug Exception
 .type isr1, @function
 isr1:
     cli
-    push byte 0
-    push byte 1
+    push   0
+    push   1
     jmp isr_common_stub
 
 #  2: Non Maskable Interrupt Exception
 .type isr2, @function
 isr2:
     cli
-    push byte 0
-    push byte 2
+    push   0
+    push   2
     jmp isr_common_stub
 
 #  3: Int 3 Exception
 .type isr3, @function
 isr3:
     cli
-    push byte 0
-    push byte 3
+    push   0
+    push   3
     jmp isr_common_stub
 
 #  4: INTO Exception
 .type isr4, @function
 isr4:
     cli
-    push byte 0
-    push byte 4
+    push   0
+    push   4
     jmp isr_common_stub
 
 #  5: Out of Bounds Exception
 .type isr5, @function
 isr5:
     cli
-    push byte 0
-    push byte 5
+    push   0
+    push   5
     jmp isr_common_stub
 
 #  6: Invalid Opcode Exception
 .type isr6, @function
 isr6:
     cli
-    push byte 0
-    push byte 6
+    push   0
+    push   6
     jmp isr_common_stub
 
 #  7: Coprocessor Not Available Exception
 .type isr7, @function
 isr7:
     cli
-    push byte 0
-    push byte 7
+    push   0
+    push   7
     jmp isr_common_stub
 
 #  8: Double Fault Exception (With Error Code!)
 .type isr8, @function
 isr8:
     cli
-    push byte 8
+    push   8
     jmp isr_common_stub
 
 #  9: Coprocessor Segment Overrun Exception
 .type isr9, @function
 isr9:
     cli
-    push byte 0
-    push byte 9
+    push   0
+    push   9
     jmp isr_common_stub
 
 # 10: Bad TSS Exception (With Error Code!)
 .type isr10, @function
 isr10:
     cli
-    push byte 10
+    push   10
     jmp isr_common_stub
 
 # 11: Segment Not Present Exception (With Error Code!)
 .type isr11, @function
 isr11:
     cli
-    push byte 11
+    push   11
     jmp isr_common_stub
 
 # 12: Stack Fault Exception (With Error Code!)
 .type isr12, @function
 isr12:
     cli
-    push byte 12
+    push   12
     jmp isr_common_stub
 
 # 13: General Protection Fault Exception (With Error Code!)
 .type isr13, @function
 isr13:
     cli
-    push byte 13
+    push   13
     jmp isr_common_stub
 
 # 14: Page Fault Exception (With Error Code!)
 .type isr14, @function
 isr14:
     cli
-    push byte 14
+    push   14
     jmp isr_common_stub
 
 # 15: Reserved Exception
 .type isr15, @function
 isr15:
     cli
-    push byte 0
-    push byte 15
+    push   0
+    push   15
     jmp isr_common_stub
 
 # 16: Floating Point Exception
 .type isr16, @function
 isr16:
     cli
-    push byte 0
-    push byte 16
+    push   0
+    push   16
     jmp isr_common_stub
 
 # 17: Alignment Check Exception
 .type isr17, @function
 isr17:
     cli
-    push byte 0
-    push byte 17
+    push   0
+    push   17
     jmp isr_common_stub
 
 # 18: Machine Check Exception
 .type isr18, @function
 isr18:
     cli
-    push byte 0
-    push byte 18
+    push   0
+    push   18
     jmp isr_common_stub
 
 # 19: Reserved
 .type isr19, @function
 isr19:
     cli
-    push byte 0
-    push byte 19
+    push   0
+    push   19
     jmp isr_common_stub
 
 # 20: Reserved
 .type isr20, @function
 isr20:
     cli
-    push byte 0
-    push byte 20
+    push   0
+    push   20
     jmp isr_common_stub
 
 # 21: Reserved
 .type isr21, @function
 isr21:
     cli
-    push byte 0
-    push byte 21
+    push   0
+    push   21
     jmp isr_common_stub
 
 # 22: Reserved
 .type isr22, @function
 isr22:
     cli
-    push byte 0
-    push byte 22
+    push   0
+    push   22
     jmp isr_common_stub
 
 # 23: Reserved
 .type isr23, @function
 isr23:
     cli
-    push byte 0
-    push byte 23
+    push   0
+    push   23
     jmp isr_common_stub
 
 # 24: Reserved
 .type isr24, @function
 isr24:
     cli
-    push byte 0
-    push byte 24
+    push   0
+    push   24
     jmp isr_common_stub
 
 # 25: Reserved
 .type isr25, @function
 isr25:
     cli
-    push byte 0
-    push byte 25
+    push   0
+    push   25
     jmp isr_common_stub
 
 # 26: Reserved
 .type isr26, @function
 isr26:
     cli
-    push byte 0
-    push byte 26
+    push   0
+    push   26
     jmp isr_common_stub
 
 # 27: Reserved
 .type isr27, @function
 isr27:
     cli
-    push byte 0
-    push byte 27
+    push   0
+    push   27
     jmp isr_common_stub
 
 # 28: Reserved
 .type isr28, @function
 isr28:
     cli
-    push byte 0
-    push byte 28
+    push   0
+    push   28
     jmp isr_common_stub
 
 # 29: Reserved
 .type isr29, @function
 isr29:
     cli
-    push byte 0
-    push byte 29
+    push   0
+    push   29
     jmp isr_common_stub
 
 # 30: Reserved
 .type isr30, @function
 isr30:
     cli
-    push byte 0
-    push byte 30
+    push   0
+    push   30
     jmp isr_common_stub
 
 # 31: Reserved
 .type isr31, @function
 isr31:
     cli
-    push byte 0
-    push byte 31
+    push   0
+    push   31
     jmp isr_common_stub
 
 # We call a C function in here. We need to let the assembler know
@@ -350,26 +350,26 @@ isr31:
 # and finally restores the stack frame.
 isr_common_stub:
     pusha
-    push ds
-    push es
-    push fs
-    push gs
-    mov 0x10, ax  # Set data segments to kernel mode 0x10
-    mov ax, ds
-    mov ax, es
-    mov ax, fs
-    mov ax, gx
-    mov esp, eax
-    push eax
-    mov fault_handler, eax
-    call eax
-    pop eax
-    pop gs
-    pop fs
-    pop es
-    pop ds
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    mov $0x10, %ax  # Set data segments to kernel mode 0x10
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %esp, %eax
+    push %eax
+    mov fault_handler, %eax
+    call *%eax
+    pop %eax
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
     popa
-    add 8, esp
+    add $8, %esp
     iret
 
 .global irq0
@@ -393,158 +393,175 @@ isr_common_stub:
 .type irq0, @function
 irq0:
     cli
-    push byte 0
-    push byte 32
+    push   0
+    push   32
     jmp irq_common_stub
 
 # 33: IRQ1
 .type irq1, @function
 irq1:
     cli
-    push byte 0
-    push byte 33
+    push   0
+    push   33
     jmp irq_common_stub
 
 # 34: IRQ2
 .type irq2, @function
 irq2:
     cli
-    push byte 0
-    push byte 34
+    push   0
+    push   34
     jmp irq_common_stub
 
 # 35: IRQ3
 .type irq3, @function
 irq3:
     cli
-    push byte 0
-    push byte 35
+    push   0
+    push   35
     jmp irq_common_stub
 
 # 36: IRQ4
 .type irq4, @function
 irq4:
     cli
-    push byte 0
-    push byte 36
+    push   0
+    push   36
     jmp irq_common_stub
 
 # 37: IRQ5
 .type irq5, @function
 irq5:
     cli
-    push byte 0
-    push byte 37
+    push   0
+    push   37
     jmp irq_common_stub
 
 # 38: IRQ6
 .type irq6, @function
 irq6:
     cli
-    push byte 0
-    push byte 38
+    push   0
+    push   38
     jmp irq_common_stub
 
 # 39: IRQ7
 .type irq7, @function
 irq7:
     cli
-    push byte 0
-    push byte 39
+    push   0
+    push   39
     jmp irq_common_stub
 
 # 40: IRQ8
 .type irq8, @function
 irq8:
     cli
-    push byte 0
-    push byte 40
+    push   0
+    push   40
     jmp irq_common_stub
 
 # 41: IRQ9
 .type irq9, @function
 irq9:
     cli
-    push byte 0
-    push byte 41
+    push   0
+    push   41
     jmp irq_common_stub
 
 # 42: IRQ10
 .type irq10, @function
 irq10:
     cli
-    push byte 0
-    push byte 42
+    push   0
+    push   42
     jmp irq_common_stub
 
 # 43: IRQ11
 .type irq11, @function
 irq11:
     cli
-    push byte 0
-    push byte 43
+    push   0
+    push   43
     jmp irq_common_stub
 
 # 44: IRQ12
 .type irq12, @function
 irq12:
     cli
-    push byte 0
-    push byte 44
+    push   0
+    push   44
     jmp irq_common_stub
 
 # 45: IRQ13
 .type irq13, @function
 irq13:
     cli
-    push byte 0
-    push byte 45
+    push   0
+    push   45
     jmp irq_common_stub
 
 # 46: IRQ14
 .type irq14, @function
 irq14:
     cli
-    push byte 0
-    push byte 46
+    push   0
+    push   46
     jmp irq_common_stub
 
 # 47: IRQ15
 .type irq15, @function
 irq15:
     cli
-    push byte 0
-    push byte 47
+    push   0
+    push   47
     jmp irq_common_stub
 
 .global irq_handler
 
 irq_common_stub:
     pusha
-    push ds
-    push es
-    push fs
-    push gs
+    push %ds
+    push %es
+    push %fs
+    push %gs
 
-    mov 0x10, ax
-    mov ax, ds
-    mov ax, es
-    mov ax, fs
-    mov ax, gs
-    mov esp, eax
+    mov $0x10, %ax
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %esp, %eax
 
-    push eax
-    mov irq_handler, eax
-    call eax
-    pop eax
+    push %eax
+    mov irq_handler, %eax
+    call *%eax
+    pop %eax
 
-    pop gs
-    pop fs
-    pop es
-    pop ds
+    pop %gs
+    pop %fs
+    pop %es
+    pop %ds
     popa
-    add 8, esp
+    add $8, %esp
     iret
+
+# Tell the processor where the new GDT exist
+.global gdt_flush
+.type gdt_flush, @function
+gdt_flush:
+    lgdt (_gp)
+    mov $0x10, %ax      # 0x10 is the offset in the GDT to our kernel data segment
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
+    jmp $0x08,$flush2     # 0x08 offsert for code segment and execute flush
+
+flush2:
+    ret                 # Goes back to C code          
+
 
 # The kernel entry point.
 .global _start

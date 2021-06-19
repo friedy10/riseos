@@ -21,13 +21,13 @@ struct idt_entry idt[256];
 struct idt_ptr idtp;
 
 typedef struct idt_entry idt_entry;
-typedef struct idt_prt idt_prt;
+typedef struct idt_ptr idt_ptr;
 
 extern void idt_load(idt_ptr *ptr);
 
 
-void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel);
-
+void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 void idt_install();
+
 
 #endif
