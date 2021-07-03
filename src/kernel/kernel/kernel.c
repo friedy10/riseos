@@ -6,7 +6,10 @@
 #include <kernel/vmm.h>
 #include <kernel/liballoc.h>
 #include <kernel/spinlock.h>
-
+#include <kernel/gdt.h>
+#include <kernel/idt.h>
+#include <kernel/isrc.h>
+#include <kernel/irq.h>
 
 void kernel_main(void) {
 
@@ -14,6 +17,12 @@ void kernel_main(void) {
     terminal_initialize();
     serial_init();
     paging_init();
+
+    gdt_install();
+    idt_install();
+    isrs_install();
+    irq_install();
+
     printf("Hello, kernel World!\n");
    
 

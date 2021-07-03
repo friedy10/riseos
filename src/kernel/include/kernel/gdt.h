@@ -31,8 +31,8 @@ typedef struct gdt_entry gdt_entry;
 typedef struct gdt_ptr gdt_ptr;
 
 
-gdt_entry gdt[3];
-gdt_ptr gp;
+extern gdt_entry gdt[3];
+extern gdt_ptr gp;
 
 extern void gdt_flush();
 

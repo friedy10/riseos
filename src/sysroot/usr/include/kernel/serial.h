@@ -24,6 +24,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
+
+void outportb(uint16_t port, uint8_t val);
+uint8_t inportb(uint16_t port);
+uint16_t inports(uint16_t _port);
+void outports(uint16_t _port, uint16_t _data);
+uint32_t inportl(uint16_t _port);
+void outportl(uint16_t _port, uint32_t _data);
+
 void vsprintf(char * str, void (*putchar)(char), const char * format, va_list arg);
 void vsprintf_helper(char * str, void (*putchar)(char), const char * format, uint32_t * pos, va_list arg);
 

@@ -2,6 +2,44 @@
 #include <stdio.h>
 #include <kernel/tty.h>
 
+unsigned char *exception_messages[] =
+{
+    "Division By Zero",
+    "Debug",
+    "Non Maskable Interrupt",
+    "Breakpoint",
+    "Into Detected Overflow",
+    "Out of Bounds",
+    "Invalid Opcode",
+    "No Coprocessor",
+
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Bad TSS",
+    "Segment Not Present",
+    "Stack Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Unknown Interrupt",
+
+    "Coprocessor Fault",
+    "Alignment Check",
+    "Machine Check",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved"
+};
 // We set the access
 // flags to 0x8E. This means that the entry is present, is
 // running in ring 0 (kernel level), and has the lower 5 bits
@@ -48,7 +86,7 @@ void fault_handler(struct regs *r){
     // 0 t0 31 
     if(r->int_no < 32){
         qemu_printf(exception_messages[r->int_no]);
-        qemu_pirntf(" Exception. System Halted!\n");
+        qemu_printf(" Exception. System Halted!\n");
         for (;;);
     }
 }

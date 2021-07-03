@@ -17,8 +17,8 @@ struct idt_ptr{
     unsigned int base;
 } __attribute__((packed));
 
-struct idt_entry idt[256];
-struct idt_ptr idtp;
+extern struct idt_entry idt[256];
+extern struct idt_ptr idtp;
 
 typedef struct idt_entry idt_entry;
 typedef struct idt_ptr idt_ptr;

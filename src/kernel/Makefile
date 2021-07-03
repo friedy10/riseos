@@ -37,6 +37,7 @@ kernel/serial.o \
 kernel/gdt.o \
 kernel/idt.o \
 kernel/isrc.o \
+kernel/irq.o \
 kernel/kernel.o \
 
 OBJS=\

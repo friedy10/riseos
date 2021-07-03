@@ -2,7 +2,7 @@
 #define ISRC_H
 
 #include <stdio.h>
-
+#include <kernel/system.h>
 #include <kernel/tty.h>
 #include <kernel/pmm.h>
 #include <kernel/serial.h>
@@ -44,14 +44,6 @@ extern void isr29();
 extern void isr30();
 extern void isr31();
 
-/* This defines what the stack looks like after an ISR was running */
-struct regs
-{
-    unsigned int gs, fs, es, ds;      /* pushed the segs last */
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;  /* pushed by 'pusha' */
-    unsigned int int_no, err_code;    /* our 'push byte #' and ecodes do this */
-    unsigned int eip, cs, eflags, useresp, ss;   /* pushed by the processor automatically */ 
-};
 
 
 // Setup ISRs
@@ -59,43 +51,6 @@ void isrs_install();
 
 void fault_handler(struct regs *r);
 
-unsigned char *exception_messages[] =
-{
-    "Division By Zero",
-    "Debug",
-    "Non Maskable Interrupt",
-    "Breakpoint",
-    "Into Detected Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Coprocessor",
-
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bad TSS",
-    "Segment Not Present",
-    "Stack Fault",
-    "General Protection Fault",
-    "Page Fault",
-    "Unknown Interrupt",
-
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Machine Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved"
-};
+extern unsigned char *exception_messages[];
 
 #endif

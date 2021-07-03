@@ -550,13 +550,13 @@ irq_common_stub:
 .global gdt_flush
 .type gdt_flush, @function
 gdt_flush:
-    lgdt (_gp)
+    lgdt (gp)
     mov $0x10, %ax      # 0x10 is the offset in the GDT to our kernel data segment
     mov %ax, %ds
     mov %ax, %es
     mov %ax, %fs
     mov %ax, %gs
-    mov %ax, %ss
+   # mov %ax, %ss
     jmp $0x08,$flush2     # 0x08 offsert for code segment and execute flush
 
 flush2:
