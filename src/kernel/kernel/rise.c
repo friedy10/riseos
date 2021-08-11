@@ -23,28 +23,27 @@ int liballoc_unlock()
 	return 0;
 }
 
-void* liballoc_alloc( int pages )
+void * liballoc_alloc(int pages)
 {
 	unsigned int size = pages * PAGE_SIZE;
 
-    if((int)(size + heap_cur) >= (int)(heap_end)){
-        qemu_printf("Out of memory: You need a bigger heap pal\n");
-        return 0;
-    }else{
+	if ((int)(size + heap_cur) >= (int)(heap_end)) {
+		qemu_printf("Out of memory: You need a bigger heap pal\n");
+		return 0;
+	} else {
+		uint32_t end_va = heap_cur + (size);
+		allocate_region(kernel_dir, heap_cur, end_va);
 
-        uint32_t end_va = heap_cur + (size);
-        allocate_region(kernel_dir, heap_cur, end_va);
-	
-        void * rez = heap_cur;
-        heap_cur += size;
+		void * rez = heap_cur;
+		heap_cur += size;
 
-	    return (void*) rez;
-    }
+		return (void *)rez;
+	}
 }
 
-int liballoc_free( void* ptr, int pages )
+int liballoc_free(void * ptr, int pages)
 {
-    uint32_t end_va = ptr + (pages * PAGE_SIZE);
-    free_region(kernel_dir, (uint32_t) ptr, end_va);
-	return 1; // TODO: Fix this so it returns 1 if it actually works
+	uint32_t end_va = ptr + (pages * PAGE_SIZE);
+	free_region(kernel_dir, (uint32_t)ptr, end_va);
+	return 1;	 // TODO: Fix this so it returns 1 if it actually works
 }

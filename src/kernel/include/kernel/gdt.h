@@ -12,32 +12,30 @@
 
 
 // GDT entry
-struct gdt_entry{
-    unsigned short limit_low;
-    unsigned short base_low;
-    unsigned char base_middle;
-    unsigned char access;
-    unsigned char granularity;
-    unsigned char base_high;
+struct gdt_entry {
+	unsigned short limit_low;
+	unsigned short base_low;
+	unsigned char  base_middle;
+	unsigned char  access;
+	unsigned char  granularity;
+	unsigned char  base_high;
 } __attribute((packed));
 
 
-struct gdt_ptr{
-    unsigned short limit;
-    unsigned int base;
+struct gdt_ptr {
+	unsigned short limit;
+	unsigned int   base;
 } __attribute__((packed));
 
 typedef struct gdt_entry gdt_entry;
-typedef struct gdt_ptr gdt_ptr;
+typedef struct gdt_ptr	 gdt_ptr;
 
-
-extern gdt_entry gdt[3];
-extern gdt_ptr gp;
-
-extern void gdt_flush();
+/* Reload new segment registers */
+//extern void gdt_flush();
 
 void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);
-
 void gdt_install();
+
+extern void gdt_flush(gdt_ptr* ptr);
 
 #endif

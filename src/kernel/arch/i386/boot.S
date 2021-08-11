@@ -27,7 +27,7 @@ stack_top:
 load_page_directory:
 	push %ebp
 	mov %esp, %ebp
-	mov 8(%esp), %eax
+	mov 8(%ebp), %eax
 	mov %eax, %cr3
 	mov %ebp, %esp
 	pop %ebp
@@ -47,16 +47,30 @@ enable_paging:
 	ret
     
 .global idt_load
-.type idt_load,@function
+.type idt_load, @function
 idt_load:
-    push %ebp
-    mov %esp, %ebp
-    mov 8(%esp), %eax
+    movl 4(%esp), %eax
     lidt (%eax)
-    mov %ebp, %esp
-    pop %ebp
     ret
 
+# Tell the processor where the new GDT exist
+.global gdt_flush
+.type gdt_flush, @function
+gdt_flush:
+    movl 4(%esp), %eax
+    lgdt (%eax)
+
+    mov $0x10, %ax      # 0x10 is the offset in the GDT to our kernel data segment
+    mov %ax, %ds
+    mov %ax, %es
+    mov %ax, %fs
+    mov %ax, %gs
+    mov %ax, %ss
+    jmp $0x08, $flush2     # 0x08 offsert for code segment and execute flush
+
+flush2:
+    ret                 # Goes back to C code          
+    
 # ISRs
 .global isr0
 .global isr1
@@ -343,7 +357,7 @@ isr31:
 
 # We call a C function in here. We need to let the assembler know
 # that '_fault_handler' exists in another file
-.global fault_handler
+.extern fault_handler
 
 # This is our common ISR stub. It saves the processor state, sets
 # up for kernel mode segments, calls the C-level fault handler,
@@ -361,7 +375,7 @@ isr_common_stub:
     mov %ax, %gs
     mov %esp, %eax
     push %eax
-    mov fault_handler, %eax
+    mov $fault_handler, %eax
     call *%eax
     pop %eax
     pop %gs
@@ -395,7 +409,9 @@ irq0:
     cli
     push   0
     push   32
+
     jmp irq_common_stub
+    
 
 # 33: IRQ1
 .type irq1, @function
@@ -534,8 +550,8 @@ irq_common_stub:
     mov %esp, %eax
 
     push %eax
-    mov irq_handler, %eax
-    call *%eax
+    mov  $irq_handler, %eax
+    call %eax
     pop %eax
 
     pop %gs
@@ -546,21 +562,6 @@ irq_common_stub:
     add $8, %esp
     iret
 
-# Tell the processor where the new GDT exist
-.global gdt_flush
-.type gdt_flush, @function
-gdt_flush:
-    lgdt (gp)
-    mov $0x10, %ax      # 0x10 is the offset in the GDT to our kernel data segment
-    mov %ax, %ds
-    mov %ax, %es
-    mov %ax, %fs
-    mov %ax, %gs
-   # mov %ax, %ss
-    jmp $0x08,$flush2     # 0x08 offsert for code segment and execute flush
-
-flush2:
-    ret                 # Goes back to C code          
 
 
 # The kernel entry point.

@@ -21,15 +21,8 @@ extern void irq14();
 extern void irq15();
 
 
-// an array of function pointers for custom
-// irq handlers
-extern void *irq_routines[16];
-
-
-void irq_install_handler(int irq, void (*handler)(struct regs *r));
+void irq_install_handler(int irq, void (*handler)(struct regs * r));
 void irq_uninstall_handler(int irq);
-void irq_remap(void);
 void irq_install();
-void irq_handler(struct regs *r);
 
 #endif

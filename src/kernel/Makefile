@@ -38,6 +38,7 @@ kernel/gdt.o \
 kernel/idt.o \
 kernel/isrc.o \
 kernel/irq.o \
+kernel/timer.o \
 kernel/kernel.o \
 
 OBJS=\

@@ -45,12 +45,7 @@ extern void isr30();
 extern void isr31();
 
 
-
 // Setup ISRs
 void isrs_install();
-
-void fault_handler(struct regs *r);
-
-extern unsigned char *exception_messages[];
 
 #endif
